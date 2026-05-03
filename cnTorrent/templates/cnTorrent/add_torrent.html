@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Torrent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .logout-form {
+            margin-top: 30px;
+        }
+        .logout-button {
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            width: 100%;
+        }
+        .logout-button:hover {
+            background-color: #e53935;
+        }
+        .torrents-list {
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+        }
+        .torrent-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+```
+<div class="container">
+    <h1>Add Torrent</h1>
+    
+    <!-- Form to add torrent link or file -->
+    <form action="{% url 'add_torrent' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <input type="text" name="torrent_name" class="input-field" placeholder="Enter torrent name" required><br>
+        
+        <label for="torrent_file">Or Upload .torrent File:</label>
+        <input type="file" name="torrent_file" accept=".torrent" class="input-field"><br>
+        
+        <input type="text" name="google_drive_link" class="input-field" placeholder="Enter Google Drive Link (Optional)"><br>
+        
+        <button type="submit" class="button">Add Torrent</button>
+    </form>
+
+    <!-- Display Torrents -->
+    <div class="torrents-list">
+        <h3>Your Torrents:</h3>
+
+        <a href="https://drive.google.com/drive/folders/1VW3Ft1lf7YlOFlUK_ECzdjpCpdL5pcOP" target="_blank" class="download-button">
+            click here to get your torrent
+        </a>
+        
+        <style>
+        .download-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .download-button:hover {
+            background-color: #3367d6;
+        }
+        </style>
+        
+
+        {% for torrent in torrents %}
+            <div class="torrent-item">
+                <strong>{{ torrent.name }}</strong><br>
+                {% if torrent.magnet_link %}
+                    <a href="{{ torrent.magnet_link }}" target="_blank">Magnet Link</a><br>
+                {% endif %}
+                Status: {{ torrent.status }}<br>
+                {% if torrent.google_drive_link %}
+                    Google Drive: <a href="{{ torrent.google_drive_link }}" target="_blank">{{ torrent.google_drive_link }}</a><br>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No torrents added yet.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Logout form -->
+    <form action="{% url 'account_logout' %}" method="post" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
+</div>
+```
+
+</body>
+</html>
